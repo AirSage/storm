@@ -4,6 +4,7 @@ import backtype.storm.generated.ShellComponent;
 import backtype.storm.tuple.MessageId;
 import backtype.storm.tuple.Tuple;
 import backtype.storm.utils.Utils;
+import backtype.storm.utils.Time;
 import backtype.storm.utils.ShellProcess;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -106,6 +107,10 @@ public class ShellBolt implements IBolt {
                     } catch (InterruptedException e) {
                     } catch (Throwable t) {
                         die(t);
+                        try {
+                            Time.sleep(250); // Avoid high-speed "polling"
+                        } catch (InterruptedException e) {
+                        }
                     }
                 }
             }
